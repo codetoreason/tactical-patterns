@@ -1,0 +1,33 @@
+# === IntelliJ IDEA ===
+.idea/
+*.iml
+*.iws
+out/
+# Optional workspace file (can be added to .gitignore or committed)
+workspace.xml
+
+# === Maven ===
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+
+# === System pliki ===
+.DS_Store
+Thumbs.db
+
+# === Logs ===
+*.log
+
+# === OS & tool specific ===
+*.swp
+*.bak
+*.tmp
+*.class
+
+# === VS Code (jeśli ktoś otworzy w VSCode) ===
+.vscode/
+
+# === Test reports (opcjonalnie) ===
+/surefire-reports/
