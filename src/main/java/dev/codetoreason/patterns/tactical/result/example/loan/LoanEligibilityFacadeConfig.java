@@ -4,9 +4,9 @@ import java.util.List;
 
 public class LoanEligibilityFacadeConfig {
 
-    public LoanEligibilityFacade loanEligibilityFacadeForTests() {
+    LoanEligibilityFacade loanEligibilityFacadeForTests(ApplicantRepository applicantRepository) {
         return new LoanEligibilityFacade(
-                new InMemoryApplicantRepository(),
+                applicantRepository,
                 new LoanEligibilityAssessor(
                         List.of(
                                 new EmploymentStabilityValidator(),
