@@ -10,7 +10,7 @@ class DebtBurdenValidator implements ApplicantValidator {
     private static final int MAX_NUMBER_OF_ACTIVE_LOANS = 5;
 
     public OperationResult validate(ApplicantProfile profile) {
-        var debt = profile.monthlyDebt();
+        var debt = profile.debtProfile();
         if (debt.totalMonthlyDebt().compareTo(MAX_TOTAL_DEBT) > 0) {
             return OperationResult.failed("Total monthly debt exceeds safe threshold");
         }

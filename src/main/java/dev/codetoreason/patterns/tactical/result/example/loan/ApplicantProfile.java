@@ -4,6 +4,6 @@ record ApplicantProfile(
         ApplicantId id,
         EmploymentHistory employmentHistory,
         CreditHistory creditHistory,
-        DebtProfile monthlyDebt
+        DebtProfile debtProfile
 ) {}
 

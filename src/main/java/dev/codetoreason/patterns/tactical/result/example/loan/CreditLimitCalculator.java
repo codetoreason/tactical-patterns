@@ -77,7 +77,7 @@ class CreditLimitCalculator {
     }
 
     private int scoreDebtBurden(ApplicantProfile profile) {
-        var debt = profile.monthlyDebt();
+        var debt = profile.debtProfile();
         var income = profile.employmentHistory().averageIncome();
         var dti = income.compareTo(BigDecimal.ZERO) > 0
                 ? debt.totalMonthlyDebt().divide(income, 4, HALF_UP)
