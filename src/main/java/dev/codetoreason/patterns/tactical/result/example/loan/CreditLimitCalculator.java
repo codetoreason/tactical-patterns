@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 import static dev.codetoreason.patterns.tactical.money.Currency.PLN;
-import static java.math.RoundingMode.HALF_UP;
 
 class CreditLimitCalculator {
 
@@ -28,30 +27,31 @@ class CreditLimitCalculator {
             5, new BigDecimal("500000"),
             4, new BigDecimal("200000"),
             3, new BigDecimal("100000"),
-            2, new BigDecimal("50000")
+            2, new BigDecimal("50000"),
+            1, new BigDecimal("20000")
     );
 
-    Money suggestLimit(ApplicantProfile profile) {
+    Money suggestLimit(CreditAssessmentData creditAssessmentData) {
         var score = 0;
-        score += scoreEmploymentStability(profile);
-        score += scoreCreditHistory(profile);
-        score += scoreDebtBurden(profile);
+        score += scoreEmploymentStability(creditAssessmentData);
+        score += scoreCreditHistory(creditAssessmentData);
+        score += scoreDebtBurden(creditAssessmentData);
 
         var limit = SCORE_TO_CREDIT_LIMIT.getOrDefault(score, DEFAULT_LIMIT);
         return Money.of(limit, PLN);
     }
 
-    private int scoreEmploymentStability(ApplicantProfile profile) {
+    private int scoreEmploymentStability(CreditAssessmentData creditAssessmentData) {
         var points = 0;
 
-        var monthsEmployed = profile.employmentHistory().monthsEmployed();
+        var monthsEmployed = creditAssessmentData.monthsEmployed();
         if (monthsEmployed >= LONG_TERM_EMPLOYMENT) {
             points += 2;
         } else if (monthsEmployed >= STABLE_EMPLOYMENT) {
             points += 1;
         }
 
-        var income = profile.employmentHistory().averageIncome();
+        var income = creditAssessmentData.averageIncome();
         if (income.compareTo(HIGH_INCOME) >= 0) {
             points += 2;
         } else if (income.compareTo(MEDIUM_INCOME) >= 0) {
@@ -61,31 +61,22 @@ class CreditLimitCalculator {
         return points;
     }
 
-    private int scoreCreditHistory(ApplicantProfile profile) {
-        var history = profile.creditHistory();
-        if (!history.hasRecentBankruptcy()
-                && !history.hasActiveCollectionCases()
-                && history.missedPaymentsLast12Months() == 0) {
+    private int scoreCreditHistory(CreditAssessmentData creditAssessmentData) {
+        var missedPaymentsLast12Months = creditAssessmentData.missedPaymentsLast12Months();
+        if (missedPaymentsLast12Months == 0) {
             return 2;
         }
-
-        if (history.missedPaymentsLast12Months() <= 1) {
+        if (missedPaymentsLast12Months <= 1) {
             return 1;
         }
-
         return 0;
     }
 
-    private int scoreDebtBurden(ApplicantProfile profile) {
-        var debt = profile.debtProfile();
-        var income = profile.employmentHistory().averageIncome();
-        var dti = income.compareTo(BigDecimal.ZERO) > 0
-                ? debt.totalMonthlyDebt().divide(income, 4, HALF_UP)
-                : BigDecimal.ONE;
+    private int scoreDebtBurden(CreditAssessmentData creditAssessmentData) {
+        var dti = creditAssessmentData.calculateDti();
 
         if (dti.compareTo(LOW_DTI_THRESHOLD) <= 0
-                && !debt.hasOverdueInstallments()
-                && debt.numberOfActiveLoans() <= 2) {
+                && creditAssessmentData.numberOfActiveLoans() <= 2) {
             return 2;
         }
 

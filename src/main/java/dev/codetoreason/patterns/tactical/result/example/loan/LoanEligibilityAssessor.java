@@ -31,7 +31,7 @@ class LoanEligibilityAssessor {
                 return ZERO;
             }
         }
-        return creditLimitCalculator.suggestLimit(profile);
+        return creditLimitCalculator.suggestLimit(profile.toCreditAssessmentData());
     }
 }
 
