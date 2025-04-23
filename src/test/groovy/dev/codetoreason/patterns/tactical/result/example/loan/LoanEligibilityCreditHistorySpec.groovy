@@ -40,7 +40,7 @@ class LoanEligibilityCreditHistorySpec extends BaseLoanEligibilitySpec {
             result.get().approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
     }
 
-    def "should add 2 points for perfect credit history (no missed payments, no issues)"() {
+    def "should add 2 points for perfect credit history - no missed payments, no issues"() {
         given:
             def applicant = validApplicantModifiedWith {
                 creditHistory(creditHistoryModifiedWith {
