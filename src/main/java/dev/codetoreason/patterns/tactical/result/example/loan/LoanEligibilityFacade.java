@@ -20,6 +20,5 @@ public class LoanEligibilityFacade {
                                   .map(loanEligibilityAssessor::assess)
                                   .map(loanEligibility -> new LoanEligibilityResult(id, loanEligibility));
     }
-
 }
 

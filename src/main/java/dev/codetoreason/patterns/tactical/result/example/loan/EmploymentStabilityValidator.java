@@ -9,6 +9,7 @@ class EmploymentStabilityValidator implements ApplicantValidator {
     private static final int MINIMUM_MONTHS_EMPLOYED = 12;
     private static final BigDecimal MINIMUM_AVERAGE_INCOME = BigDecimal.valueOf(2000);
 
+    @Override
     public OperationResult validate(ApplicantProfile profile) {
         var history = profile.employmentHistory();
         if (history.monthsEmployed() < MINIMUM_MONTHS_EMPLOYED) {
