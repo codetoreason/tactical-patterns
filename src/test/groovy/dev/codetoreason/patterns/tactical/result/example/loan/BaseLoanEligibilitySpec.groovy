@@ -7,7 +7,6 @@ import static dev.codetoreason.patterns.tactical.result.example.loan.ApplicantPr
 import static dev.codetoreason.patterns.tactical.result.example.loan.CreditHistory.CreditHistoryBuilder
 import static dev.codetoreason.patterns.tactical.result.example.loan.DebtProfile.DebtProfileBuilder
 import static dev.codetoreason.patterns.tactical.result.example.loan.EmploymentHistory.EmploymentHistoryBuilder
-import static dev.codetoreason.patterns.tactical.result.example.loan.EmploymentHistory.builder
 import static groovy.lang.Closure.DELEGATE_FIRST
 
 abstract class BaseLoanEligibilitySpec extends Specification {
@@ -16,11 +15,11 @@ abstract class BaseLoanEligibilitySpec extends Specification {
 
     protected static final ApplicantProfile VALID_APPLICANT = new ApplicantProfile(
             APPLICANT_ID,
-            builder()
-                    .monthsEmployed(12)
-                    .isCurrentlyEmployed(true)
-                    .averageIncome(new BigDecimal("2000"))
-                    .build(),
+            EmploymentHistory.builder()
+                             .monthsEmployed(12)
+                             .isCurrentlyEmployed(true)
+                             .averageIncome(new BigDecimal("2000"))
+                             .build(),
             CreditHistory.builder()
                          .missedPaymentsLast12Months(2)
                          .hasActiveCollectionCases(false)

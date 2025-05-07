@@ -17,7 +17,10 @@ class LoanEligibilityCreditHistorySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("10000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("10000"), PLN)
+            }
     }
 
     def "should add 1 point when applicant missed exactly 1 payment but no collections or bankruptcy"() {
@@ -37,7 +40,10 @@ class LoanEligibilityCreditHistorySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+            }
     }
 
     def "should add 2 points for perfect credit history - no missed payments, no issues"() {
@@ -57,6 +63,9 @@ class LoanEligibilityCreditHistorySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("50000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("50000"), PLN)
+            }
     }
 }

@@ -17,9 +17,16 @@ class LoanEligibilityBadCreditHistorySpec extends BaseLoanEligibilitySpec {
                                                .withApplicant(applicant)
                                                .build()
 
-        expect:
-            facade.assessEligibility(APPLICANT_ID).get().approvedAmount() == Money.zero(PLN)
+        when:
+            def result = facade.assessEligibility(APPLICANT_ID)
+
+        then:
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.zero(PLN)
+            }
     }
+
 
     def "should reject when applicant has active collection cases"() {
         given:
@@ -32,8 +39,14 @@ class LoanEligibilityBadCreditHistorySpec extends BaseLoanEligibilitySpec {
                                                .withApplicant(applicant)
                                                .build()
 
-        expect:
-            facade.assessEligibility(APPLICANT_ID).get().approvedAmount() == Money.zero(PLN)
+        when:
+            def result = facade.assessEligibility(APPLICANT_ID)
+
+        then:
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.zero(PLN)
+            }
     }
 
     def "should reject when applicant missed more than 2 payments"() {
@@ -43,9 +56,17 @@ class LoanEligibilityBadCreditHistorySpec extends BaseLoanEligibilitySpec {
                     missedPaymentsLast12Months 3
                 })
             }
-            def facade = LoanEligibilityFixture.create().withApplicant(applicant).build()
+            def facade = LoanEligibilityFixture.create()
+                                               .withApplicant(applicant)
+                                               .build()
 
-        expect:
-            facade.assessEligibility(APPLICANT_ID).get().approvedAmount() == Money.zero(PLN)
+        when:
+            def result = facade.assessEligibility(APPLICANT_ID)
+
+        then:
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.zero(PLN)
+            }
     }
 }

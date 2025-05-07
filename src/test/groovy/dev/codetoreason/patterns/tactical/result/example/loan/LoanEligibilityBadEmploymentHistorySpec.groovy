@@ -13,10 +13,18 @@ class LoanEligibilityBadEmploymentHistorySpec extends BaseLoanEligibilitySpec {
                     monthsEmployed 6
                 })
             }
-            def facade = LoanEligibilityFixture.create().withApplicant(applicant).build()
+            def facade = LoanEligibilityFixture.create()
+                                               .withApplicant(applicant)
+                                               .build()
 
-        expect:
-            facade.assessEligibility(APPLICANT_ID).get().approvedAmount() == Money.zero(PLN)
+        when:
+            def result = facade.assessEligibility(APPLICANT_ID)
+
+        then:
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.zero(PLN)
+            }
     }
 
     def "should reject when applicant is not currently employed"() {
@@ -26,10 +34,18 @@ class LoanEligibilityBadEmploymentHistorySpec extends BaseLoanEligibilitySpec {
                     isCurrentlyEmployed false
                 })
             }
-            def facade = LoanEligibilityFixture.create().withApplicant(applicant).build()
+            def facade = LoanEligibilityFixture.create()
+                                               .withApplicant(applicant)
+                                               .build()
 
-        expect:
-            facade.assessEligibility(APPLICANT_ID).get().approvedAmount() == Money.zero(PLN)
+        when:
+            def result = facade.assessEligibility(APPLICANT_ID)
+
+        then:
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.zero(PLN)
+            }
     }
 
     def "should reject when applicant has income below threshold"() {
@@ -39,9 +55,17 @@ class LoanEligibilityBadEmploymentHistorySpec extends BaseLoanEligibilitySpec {
                     averageIncome new BigDecimal("1500")
                 })
             }
-            def facade = LoanEligibilityFixture.create().withApplicant(applicant).build()
+            def facade = LoanEligibilityFixture.create()
+                                               .withApplicant(applicant)
+                                               .build()
 
-        expect:
-            facade.assessEligibility(APPLICANT_ID).get().approvedAmount() == Money.zero(PLN)
+        when:
+            def result = facade.assessEligibility(APPLICANT_ID)
+
+        then:
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.zero(PLN)
+            }
     }
 }

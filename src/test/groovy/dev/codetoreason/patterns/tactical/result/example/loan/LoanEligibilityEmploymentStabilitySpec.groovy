@@ -17,7 +17,10 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("10000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("10000"), PLN)
+            }
     }
 
     def "should add 1 point for stable employment and low income"() {
@@ -35,7 +38,10 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+            }
     }
 
     def "should add 1 point for short employment and medium income"() {
@@ -53,7 +59,10 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+            }
     }
 
     def "should add 2 points for stable employment and medium income"() {
@@ -72,7 +81,10 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("50000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("50000"), PLN)
+            }
     }
 
     def "should add 3 points for long employment and medium income"() {
@@ -91,7 +103,10 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("100000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("100000"), PLN)
+            }
     }
 
     def "should add 3 points for stable employment and high income"() {
@@ -110,7 +125,10 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("100000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("100000"), PLN)
+            }
     }
 
     def "should add 4 points for long employment and high income"() {
@@ -129,6 +147,9 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("200000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("200000"), PLN)
+            }
     }
 }

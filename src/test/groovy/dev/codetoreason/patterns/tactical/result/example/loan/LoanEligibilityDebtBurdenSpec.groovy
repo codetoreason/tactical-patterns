@@ -18,7 +18,11 @@ class LoanEligibilityDebtBurdenSpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("10000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("10000"), PLN)
+            }
+        and:
             applicant.toCreditAssessmentData().calculateDti() > new BigDecimal("0.35")
     }
 
@@ -38,7 +42,11 @@ class LoanEligibilityDebtBurdenSpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+            }
+        and:
             applicant.toCreditAssessmentData().calculateDti() <= new BigDecimal("0.35")
     }
 
@@ -59,7 +67,11 @@ class LoanEligibilityDebtBurdenSpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+            }
+        and:
             applicant.toCreditAssessmentData().calculateDti() == new BigDecimal(dtiValue)
 
         where:
@@ -87,7 +99,11 @@ class LoanEligibilityDebtBurdenSpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.get().approvedAmount() == Money.of(new BigDecimal("50000"), PLN)
+            result.isPresent()
+            with(result.get()) {
+                approvedAmount() == Money.of(new BigDecimal("50000"), PLN)
+            }
+        and:
             applicant.toCreditAssessmentData().calculateDti() == new BigDecimal(dtiValue)
 
         where:
