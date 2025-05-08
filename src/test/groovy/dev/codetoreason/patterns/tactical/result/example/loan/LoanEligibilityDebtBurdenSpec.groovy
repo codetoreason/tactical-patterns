@@ -4,10 +4,17 @@ import dev.codetoreason.patterns.tactical.money.Money
 import spock.lang.Unroll
 
 import static dev.codetoreason.patterns.tactical.money.Currency.PLN
+import static dev.codetoreason.patterns.tactical.money.MoneyFactory.pln
+import static dev.codetoreason.patterns.tactical.money.MoneyFactory.pln
+import static dev.codetoreason.patterns.tactical.money.MoneyFactory.pln
 
 class LoanEligibilityDebtBurdenSpec extends BaseLoanEligibilitySpec {
 
-    def "should add 0 points when DTI > 0.35 regardless of active loans"() {
+    static final def APPROVED_10K = pln("10000")
+    static final def APPROVED_20K = pln("20000")
+    static final def APPROVED_50K = pln("50000")
+
+    def "should approve 10_000 PLN when DTI > 0.35 regardless of active loans"() {
         given:
             def applicant = VALID_APPLICANT
 
@@ -18,15 +25,14 @@ class LoanEligibilityDebtBurdenSpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("10000"), PLN)
+                approvedAmount() == APPROVED_10K
             }
         and:
             applicant.toCreditAssessmentData().calculateDti() > new BigDecimal("0.35")
     }
 
-    def "should add 1 point when 0.2 < DTI <= 0.35 regardless of active loans"() {
+    def "should approve 20_000 PLN when 0.2 < DTI <= 0.35 regardless of active loans"() {
         given:
             def applicant = validApplicantModifiedWith {
                 debtProfile(debtProfileModifiedWith {
@@ -42,16 +48,15 @@ class LoanEligibilityDebtBurdenSpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+                approvedAmount() == APPROVED_20K
             }
         and:
             applicant.toCreditAssessmentData().calculateDti() <= new BigDecimal("0.35")
     }
 
     @Unroll("#dataVariables")
-    def "should add 1 point when DTI <= 0.2 but active loans > 2"() {
+    def "should approve 20_000 PLN when DTI <= 0.2 but active loans > 2"() {
         given:
             def applicant = validApplicantModifiedWith {
                 debtProfile(debtProfileModifiedWith {
@@ -67,9 +72,8 @@ class LoanEligibilityDebtBurdenSpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+                approvedAmount() == APPROVED_20K
             }
         and:
             applicant.toCreditAssessmentData().calculateDti() == new BigDecimal(dtiValue)
@@ -78,12 +82,10 @@ class LoanEligibilityDebtBurdenSpec extends BaseLoanEligibilitySpec {
             monthlyDebtValue | dtiValue
             "400"            | "0.2"
             "300"            | "0.15"
-            "400"            | "0.2"
-            "300"            | "0.15"
     }
 
     @Unroll("#dataVariables")
-    def "should add 2 points when DTI <= 0.2 and active loans <= 2"() {
+    def "should approve 50_000 PLN when DTI <= 0.2 and active loans <= 2"() {
         given:
             def applicant = validApplicantModifiedWith {
                 debtProfile(debtProfileModifiedWith {
@@ -99,9 +101,8 @@ class LoanEligibilityDebtBurdenSpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("50000"), PLN)
+                approvedAmount() == APPROVED_50K
             }
         and:
             applicant.toCreditAssessmentData().calculateDti() == new BigDecimal(dtiValue)

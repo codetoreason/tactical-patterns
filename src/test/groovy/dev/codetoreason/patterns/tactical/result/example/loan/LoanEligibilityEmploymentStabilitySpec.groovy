@@ -1,12 +1,17 @@
 package dev.codetoreason.patterns.tactical.result.example.loan
 
-import dev.codetoreason.patterns.tactical.money.Money
 
-import static dev.codetoreason.patterns.tactical.money.Currency.PLN
+import static dev.codetoreason.patterns.tactical.money.MoneyFactory.pln
 
 class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
 
-    def "should add 0 points for short employment and low income"() {
+    static final def APPROVED_10K = pln("10000")
+    static final def APPROVED_20K = pln("20000")
+    static final def APPROVED_50K = pln("50000")
+    static final def APPROVED_100K = pln("100000")
+    static final def APPROVED_200K = pln("200000")
+
+    def "should approve 10_000 PLN for short employment and low income"() {
         given:
             def applicant = VALID_APPLICANT
 
@@ -17,13 +22,12 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("10000"), PLN)
+                approvedAmount() == APPROVED_10K
             }
     }
 
-    def "should add 1 point for stable employment and low income"() {
+    def "should approve 20_000 PLN for stable employment and low income"() {
         given:
             def applicant = validApplicantModifiedWith {
                 employmentHistory(employmentHistoryModifiedWith {
@@ -38,13 +42,12 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+                approvedAmount() == APPROVED_20K
             }
     }
 
-    def "should add 1 point for short employment and medium income"() {
+    def "should approve 20_000 PLN for short employment and medium income"() {
         given:
             def applicant = validApplicantModifiedWith {
                 employmentHistory(employmentHistoryModifiedWith {
@@ -59,13 +62,12 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+                approvedAmount() == APPROVED_20K
             }
     }
 
-    def "should add 2 points for stable employment and medium income"() {
+    def "should approve 50_000 PLN for stable employment and medium income"() {
         given:
             def applicant = validApplicantModifiedWith {
                 employmentHistory(employmentHistoryModifiedWith {
@@ -81,13 +83,12 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("50000"), PLN)
+                approvedAmount() == APPROVED_50K
             }
     }
 
-    def "should add 3 points for long employment and medium income"() {
+    def "should approve 100_000 PLN for long employment and medium income"() {
         given:
             def applicant = validApplicantModifiedWith {
                 employmentHistory(employmentHistoryModifiedWith {
@@ -103,13 +104,12 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("100000"), PLN)
+                approvedAmount() == APPROVED_100K
             }
     }
 
-    def "should add 3 points for stable employment and high income"() {
+    def "should approve 100_000 PLN for stable employment and high income"() {
         given:
             def applicant = validApplicantModifiedWith {
                 employmentHistory(employmentHistoryModifiedWith {
@@ -125,13 +125,12 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("100000"), PLN)
+                approvedAmount() == APPROVED_100K
             }
     }
 
-    def "should add 4 points for long employment and high income"() {
+    def "should approve 200_000 PLN for long employment and high income"() {
         given:
             def applicant = validApplicantModifiedWith {
                 employmentHistory(employmentHistoryModifiedWith {
@@ -147,9 +146,8 @@ class LoanEligibilityEmploymentStabilitySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("200000"), PLN)
+                approvedAmount() == APPROVED_200K
             }
     }
 }

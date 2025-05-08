@@ -21,7 +21,6 @@ class LoanEligibilityBadEmploymentHistorySpec extends BaseLoanEligibilitySpec {
             def result = facade.assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
                 approvedAmount() == Money.zero(PLN)
             }
@@ -42,7 +41,6 @@ class LoanEligibilityBadEmploymentHistorySpec extends BaseLoanEligibilitySpec {
             def result = facade.assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
                 approvedAmount() == Money.zero(PLN)
             }
@@ -63,7 +61,6 @@ class LoanEligibilityBadEmploymentHistorySpec extends BaseLoanEligibilitySpec {
             def result = facade.assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
                 approvedAmount() == Money.zero(PLN)
             }

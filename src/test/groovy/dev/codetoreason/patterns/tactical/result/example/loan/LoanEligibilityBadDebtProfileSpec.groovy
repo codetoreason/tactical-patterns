@@ -22,7 +22,6 @@ class LoanEligibilityBadDebtProfileSpec extends BaseLoanEligibilitySpec {
             def result = facade.assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
                 approvedAmount() == Money.zero(PLN)
             }
@@ -43,7 +42,6 @@ class LoanEligibilityBadDebtProfileSpec extends BaseLoanEligibilitySpec {
             def result = facade.assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
                 approvedAmount() == Money.zero(PLN)
             }
@@ -64,7 +62,6 @@ class LoanEligibilityBadDebtProfileSpec extends BaseLoanEligibilitySpec {
             def result = facade.assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
                 approvedAmount() == Money.zero(PLN)
             }

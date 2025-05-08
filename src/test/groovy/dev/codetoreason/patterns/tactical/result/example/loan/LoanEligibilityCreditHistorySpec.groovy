@@ -1,12 +1,15 @@
 package dev.codetoreason.patterns.tactical.result.example.loan
 
-import dev.codetoreason.patterns.tactical.money.Money
 
-import static dev.codetoreason.patterns.tactical.money.Currency.PLN
+import static dev.codetoreason.patterns.tactical.money.MoneyFactory.pln
 
 class LoanEligibilityCreditHistorySpec extends BaseLoanEligibilitySpec {
 
-    def "should add 0 points when applicant missed more than 1 payment"() {
+    static final def APPROVED_10K = pln("10000")
+    static final def APPROVED_20K = pln("20000")
+    static final def APPROVED_50K = pln("50000")
+
+    def "should approve 10_000 PLN when applicant missed more than 1 payment"() {
         given:
             def applicant = VALID_APPLICANT
 
@@ -17,13 +20,12 @@ class LoanEligibilityCreditHistorySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("10000"), PLN)
+                approvedAmount() == APPROVED_10K
             }
     }
 
-    def "should add 1 point when applicant missed exactly 1 payment but no collections or bankruptcy"() {
+    def "should approve 20_000 PLN when applicant missed exactly 1 payment but no collections or bankruptcy"() {
         given:
             def applicant = validApplicantModifiedWith {
                 creditHistory(creditHistoryModifiedWith {
@@ -40,13 +42,12 @@ class LoanEligibilityCreditHistorySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("20000"), PLN)
+                approvedAmount() == APPROVED_20K
             }
     }
 
-    def "should add 2 points for perfect credit history - no missed payments, no issues"() {
+    def "should approve 50_000 PLN for perfect credit history - no missed payments, no issues"() {
         given:
             def applicant = validApplicantModifiedWith {
                 creditHistory(creditHistoryModifiedWith {
@@ -63,9 +64,8 @@ class LoanEligibilityCreditHistorySpec extends BaseLoanEligibilitySpec {
                                                .assessEligibility(APPLICANT_ID)
 
         then:
-            result.isPresent()
             with(result.get()) {
-                approvedAmount() == Money.of(new BigDecimal("50000"), PLN)
+                approvedAmount() == APPROVED_50K
             }
     }
 }
