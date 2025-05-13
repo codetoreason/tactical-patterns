@@ -19,6 +19,6 @@ class LoanEligibilityFixture {
     }
 
     LoanEligibilityFacade build() {
-        factory.loanEligibilityFacadeForTests(applicantRepo)
+        factory.create(applicantRepo)
     }
 }
