@@ -10,7 +10,7 @@ class LoanEligibilityFixture {
     }
 
     static LoanEligibilityFixture create() {
-        return new LoanEligibilityFixture()
+        new LoanEligibilityFixture()
     }
 
     LoanEligibilityFixture withApplicant(ApplicantProfile applicantProfile) {

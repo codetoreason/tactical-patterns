@@ -39,7 +39,7 @@ abstract class BaseLoanEligibilitySpec extends Specification {
         customizer.delegate = builder
         customizer.resolveStrategy = DELEGATE_FIRST
         customizer.call()
-        return builder.build()
+        builder.build()
     }
 
     protected static EmploymentHistory employmentHistoryModifiedWith(
@@ -49,7 +49,7 @@ abstract class BaseLoanEligibilitySpec extends Specification {
         modifier.delegate = builder
         modifier.resolveStrategy = DELEGATE_FIRST
         modifier.call()
-        return builder.build()
+        builder.build()
     }
 
     protected static CreditHistory creditHistoryModifiedWith(
@@ -59,7 +59,7 @@ abstract class BaseLoanEligibilitySpec extends Specification {
         modifier.delegate = builder
         modifier.resolveStrategy = DELEGATE_FIRST
         modifier.call()
-        return builder.build()
+        builder.build()
     }
 
     protected static DebtProfile debtProfileModifiedWith(
@@ -69,6 +69,6 @@ abstract class BaseLoanEligibilitySpec extends Specification {
         modifier.delegate = builder
         modifier.resolveStrategy = DELEGATE_FIRST
         modifier.call()
-        return builder.build()
+        builder.build()
     }
 }

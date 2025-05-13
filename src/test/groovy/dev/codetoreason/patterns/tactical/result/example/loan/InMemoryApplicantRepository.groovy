@@ -6,7 +6,7 @@ class InMemoryApplicantRepository implements ApplicantRepository {
 
     @Override
     Optional<ApplicantProfile> findProfileById(ApplicantId id) {
-        return Optional.ofNullable(storage.get(id))
+        Optional.ofNullable(storage.get(id))
     }
 
     void save(ApplicantProfile profile) {
