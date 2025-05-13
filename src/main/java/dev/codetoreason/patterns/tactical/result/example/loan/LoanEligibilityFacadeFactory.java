@@ -2,7 +2,7 @@ package dev.codetoreason.patterns.tactical.result.example.loan;
 
 import java.util.List;
 
-public class LoanEligibilityFacadeConfig {
+public class LoanEligibilityFacadeFactory {
 
     LoanEligibilityFacade loanEligibilityFacadeForTests(ApplicantRepository applicantRepository) {
         return new LoanEligibilityFacade(

@@ -3,7 +3,7 @@ package dev.codetoreason.patterns.tactical.result.example.loan
 class LoanEligibilityFixture {
 
     private final def applicantRepo = new InMemoryApplicantRepository()
-    private final def config = new LoanEligibilityFacadeConfig()
+    private final def factory = new LoanEligibilityFacadeFactory()
 
     static LoanEligibilityFacade withoutApplicants() {
         new LoanEligibilityFixture().build()
@@ -19,6 +19,6 @@ class LoanEligibilityFixture {
     }
 
     LoanEligibilityFacade build() {
-        config.loanEligibilityFacadeForTests(applicantRepo)
+        factory.loanEligibilityFacadeForTests(applicantRepo)
     }
 }
