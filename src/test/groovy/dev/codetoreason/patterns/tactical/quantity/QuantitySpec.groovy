@@ -39,7 +39,6 @@ class QuantitySpec extends Specification {
             Quantity.of(5).hashCode() != Quantity.of(3).hashCode()
     }
 
-
     @Unroll
     def "should detect isZero correctly for #val"() {
         expect:
