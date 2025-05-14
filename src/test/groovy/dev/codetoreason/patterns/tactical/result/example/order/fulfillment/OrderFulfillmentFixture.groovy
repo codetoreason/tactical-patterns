@@ -16,8 +16,8 @@ class OrderFulfillmentFixture extends Specification {
     private final def warehouseRepository = new InMemoryWarehouseRepository()
     private final def factory = new OrderFulfillmentFacadeFactory()
 
-    static OrderFulfillmentFacade fresh() {
-        new OrderFulfillmentFixture().build()
+    static OrderFulfillmentFacade freshFacade() {
+        new OrderFulfillmentFixture().buildFacade()
     }
 
     static OrderFulfillmentFixture create() {
@@ -34,7 +34,7 @@ class OrderFulfillmentFixture extends Specification {
         this
     }
 
-    OrderFulfillmentFacade build() {
+    OrderFulfillmentFacade buildFacade() {
         factory.create(
                 shippingServiceStub,
                 eventPublisherMock,
