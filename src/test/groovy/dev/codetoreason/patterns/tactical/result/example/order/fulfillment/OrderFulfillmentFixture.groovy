@@ -1,7 +1,9 @@
 package dev.codetoreason.patterns.tactical.result.example.order.fulfillment
 
 import dev.codetoreason.patterns.tactical.infra.event.Event
+import dev.codetoreason.patterns.tactical.quantity.Quantity
 
+import static dev.codetoreason.patterns.tactical.quantity.Quantity.ZERO
 import static dev.codetoreason.patterns.tactical.result.example.order.fulfillment.ProductType.STANDARD
 
 class OrderFulfillmentFixture {
@@ -55,7 +57,7 @@ class OrderFulfillmentFixture {
         private final WarehouseId id
         private String region
         private Set<ProductType> supportedTypes = Set.of()
-        private int quantity = 0
+        private Quantity quantity = ZERO
 
         WarehouseBuilder(OrderFulfillmentFixture fixture, WarehouseId id) {
             this.fixture = fixture
@@ -82,7 +84,7 @@ class OrderFulfillmentFixture {
         }
 
         WarehouseBuilder stockingQuantity(int quantity) {
-            this.quantity = quantity
+            this.quantity = Quantity.of(quantity)
             this
         }
 
@@ -101,7 +103,7 @@ class OrderFulfillmentFixture {
 
     class OrderBuilder {
         private final OrderFulfillmentFixture fixture
-        private int quantity = 0
+        private Quantity quantity = ZERO
         private String region
 
         OrderBuilder(OrderFulfillmentFixture fixture) {
@@ -109,7 +111,7 @@ class OrderFulfillmentFixture {
         }
 
         OrderBuilder ofQuantity(int quantity) {
-            this.quantity = quantity
+            this.quantity = Quantity.of(quantity)
             this
         }
 
