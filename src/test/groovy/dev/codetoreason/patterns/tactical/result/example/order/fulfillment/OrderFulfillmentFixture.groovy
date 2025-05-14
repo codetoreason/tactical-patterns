@@ -53,19 +53,28 @@ class OrderFulfillmentFixture {
     class WarehouseBuilder {
         private final OrderFulfillmentFixture fixture
         private final WarehouseId id
-        private String region = DEFAULT_REGION_NAME
-        private Set<ProductType> supportedTypes = Set.of(PRODUCT.type())
-        private int quantity = 10
+        private String region
+        private Set<ProductType> supportedTypes = Set.of()
+        private int quantity = 0
 
         WarehouseBuilder(OrderFulfillmentFixture fixture, WarehouseId id) {
             this.fixture = fixture
             this.id = id
         }
 
+        WarehouseBuilder inDefaultRegion() {
+            assignedToRegion(DEFAULT_REGION_NAME)
+        }
+
         WarehouseBuilder assignedToRegion(String region) {
             this.region = region
             this
         }
+
+        WarehouseBuilder supportingOrderedProduct() {
+            supporting(PRODUCT.type())
+        }
+
 
         WarehouseBuilder supporting(ProductType... types) {
             this.supportedTypes = Set.of(types)
@@ -92,8 +101,8 @@ class OrderFulfillmentFixture {
 
     class OrderBuilder {
         private final OrderFulfillmentFixture fixture
-        private int quantity = 5
-        private String region = DEFAULT_REGION_NAME
+        private int quantity = 0
+        private String region
 
         OrderBuilder(OrderFulfillmentFixture fixture) {
             this.fixture = fixture
@@ -102,6 +111,10 @@ class OrderFulfillmentFixture {
         OrderBuilder ofQuantity(int quantity) {
             this.quantity = quantity
             this
+        }
+
+        OrderBuilder toDefaultRegion() {
+            toRegion(DEFAULT_REGION_NAME)
         }
 
         OrderBuilder toRegion(String region) {
