@@ -1,13 +1,16 @@
 package dev.codetoreason.patterns.tactical.result.example.order.fulfillment;
 
+import lombok.Builder;
+
 import java.util.Map;
 import java.util.Set;
 
+@Builder
 record Warehouse(
         WarehouseId id,
         String region,
         Set<ProductType> supportedTypes,
-        Map<String, Integer> stockLevels
+        Map<ProductId, Integer> stockLevels
 ) {
 
     boolean hasProduct(Product product, int quantity) {

@@ -1,4 +1,11 @@
 package dev.codetoreason.patterns.tactical.result.example.order.fulfillment;
 
-record Product(String id, String name, ProductType type) {
+import lombok.Builder;
+
+@Builder
+record Product(
+        ProductId id,
+        String name,
+        ProductType type
+) {
 }
