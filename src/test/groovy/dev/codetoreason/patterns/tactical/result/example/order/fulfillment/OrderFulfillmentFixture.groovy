@@ -1,12 +1,10 @@
 package dev.codetoreason.patterns.tactical.result.example.order.fulfillment
 
 import dev.codetoreason.patterns.tactical.infra.event.Event
-import dev.codetoreason.patterns.tactical.infra.event.EventPublisher
-import spock.lang.Specification
 
 import static dev.codetoreason.patterns.tactical.result.example.order.fulfillment.ProductType.STANDARD
 
-class OrderFulfillmentFixture extends Specification {
+class OrderFulfillmentFixture {
 
     static final OrderId ORDER_ID = new OrderId("ORDER-1")
     static final Product PRODUCT = Product.builder()
@@ -17,10 +15,8 @@ class OrderFulfillmentFixture extends Specification {
     static final ShipmentId SHIPMENT_ID = new ShipmentId("shipment-123")
     static final String DEFAULT_REGION_NAME = "REGION-1"
 
-    private final def shippingServiceStub = Stub(ShippingService) {
-        dispatch(_ as OrderId, _ as WarehouseId) >> SHIPMENT_ID
-    }
-    private final def eventPublisherMock = Mock(EventPublisher)
+    private final def shippingService = new FakeShippingService()
+    private final def eventPublisher = new CapturingEventPublisher()
     private final def orderRepository = new InMemoryOrderRepository()
     private final def warehouseRepository = new InMemoryWarehouseRepository()
     private final def factory = new OrderFulfillmentFacadeFactory()
@@ -34,24 +30,24 @@ class OrderFulfillmentFixture extends Specification {
     }
 
     WarehouseBuilder withWarehouse(WarehouseId id) {
-        return new WarehouseBuilder(this, id)
+        new WarehouseBuilder(this, id)
     }
 
     OrderBuilder withOrder() {
-        return new OrderBuilder(this)
+        new OrderBuilder(this)
     }
 
     OrderFulfillmentFacade buildFacade() {
         factory.create(
-                shippingServiceStub,
-                eventPublisherMock,
+                shippingService,
+                eventPublisher,
                 orderRepository,
                 warehouseRepository
         )
     }
 
     void verifyEventPublished(Event event) {
-        1 * eventPublisherMock.publish(event)
+        eventPublisher.verifyLastPublished(event)
     }
 
     class WarehouseBuilder {
