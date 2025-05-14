@@ -57,15 +57,6 @@ public record Quantity(int value) {
     }
 
     /**
-     * Returns a {@code Quantity} representing zero units.
-     *
-     * @return a quantity of zero
-     */
-    public static Quantity zero() {
-        return new Quantity(0);
-    }
-
-    /**
      * Returns whether this quantity is exactly zero.
      *
      * @return {@code true} if the quantity is 0
