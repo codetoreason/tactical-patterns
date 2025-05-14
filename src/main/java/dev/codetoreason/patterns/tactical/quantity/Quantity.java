@@ -27,6 +27,13 @@ package dev.codetoreason.patterns.tactical.quantity;
 public record Quantity(int value) {
 
     /**
+     * A constant representing a quantity of zero units.
+     * <p>
+     * Equivalent to {@code Quantity.of(0)} but avoids allocation.
+     */
+    public static final Quantity ZERO = new Quantity(0);
+
+    /**
      * Creates a new quantity with the given value.
      *
      * @param value the number of units (must be ≥ 0)
@@ -75,5 +82,46 @@ public record Quantity(int value) {
     public boolean isPositive() {
         return value > 0;
     }
+
+    /**
+     * Returns {@code true} if this quantity is strictly greater than the given quantity.
+     *
+     * @param other the quantity to compare to
+     * @return {@code true} if {@code this.value > other.value}
+     */
+    public boolean isGreaterThan(Quantity other) {
+        return this.value > other.value;
+    }
+
+    /**
+     * Returns {@code true} if this quantity is greater than or equal to the given quantity.
+     *
+     * @param other the quantity to compare to
+     * @return {@code true} if {@code this.value >= other.value}
+     */
+    public boolean isGreaterThanOrEqualTo(Quantity other) {
+        return this.value >= other.value;
+    }
+
+    /**
+     * Returns {@code true} if this quantity is strictly less than the given quantity.
+     *
+     * @param other the quantity to compare to
+     * @return {@code true} if {@code this.value < other.value}
+     */
+    public boolean isLessThan(Quantity other) {
+        return this.value < other.value;
+    }
+
+    /**
+     * Returns {@code true} if this quantity is less than or equal to the given quantity.
+     *
+     * @param other the quantity to compare to
+     * @return {@code true} if {@code this.value <= other.value}
+     */
+    public boolean isLessThanOrEqualTo(Quantity other) {
+        return this.value <= other.value;
+    }
+
 }
 
