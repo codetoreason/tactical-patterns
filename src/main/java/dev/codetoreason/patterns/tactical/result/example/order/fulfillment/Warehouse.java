@@ -14,7 +14,14 @@ record Warehouse(
 ) {
 
     boolean hasProduct(Product product, int quantity) {
-        return stockLevels.getOrDefault(product.id(), 0) >= quantity;
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative");
+        }
+        if (quantity == 0) {
+            return supports(product.type());
+        }
+        var stockLevel = stockLevels.getOrDefault(product.id(), 0);
+        return stockLevel >= quantity;
     }
 
     boolean supports(ProductType type) {
