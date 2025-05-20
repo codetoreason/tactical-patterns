@@ -18,7 +18,6 @@ class OrderFulfillmentWarehouseAvailabilitySpec extends Specification {
                                                  .withWarehouse(new WarehouseId("W1"))
                                                  .assignedToRegion("OTHER-REGION")
                                                  .and()
-
             def facade = fixture.buildFacade()
 
         when:
@@ -35,14 +34,12 @@ class OrderFulfillmentWarehouseAvailabilitySpec extends Specification {
 
     def "should reject order when no warehouse supports product type"() {
         given:
-            def orderedProductType = PRODUCT.type()
             def fixture = OrderFulfillmentFixture.create()
                                                  .withOrder()
                                                  .and()
                                                  .withWarehouse(new WarehouseId("W2"))
                                                  .supporting(PERISHABLE)
                                                  .and()
-
             def facade = fixture.buildFacade()
 
         when:
@@ -52,7 +49,7 @@ class OrderFulfillmentWarehouseAvailabilitySpec extends Specification {
             fixture.verifyEventPublished(
                     new OrderRejectedEvent(
                             ORDER_ID,
-                            "No warehouse capable of handling product type: $orderedProductType"
+                            "No warehouse capable of handling product type: ${ PRODUCT.type() }"
                     )
             )
     }
