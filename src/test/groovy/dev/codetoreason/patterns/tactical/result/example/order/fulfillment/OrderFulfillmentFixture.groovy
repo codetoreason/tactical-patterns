@@ -27,10 +27,6 @@ class OrderFulfillmentFixture {
         new OrderFulfillmentFixture()
     }
 
-    static OrderFulfillmentFacade freshFacade() {
-        new OrderFulfillmentFixture().buildFacade()
-    }
-
     WarehouseBuilder withWarehouse(WarehouseId id) {
         new WarehouseBuilder(this, id)
     }
