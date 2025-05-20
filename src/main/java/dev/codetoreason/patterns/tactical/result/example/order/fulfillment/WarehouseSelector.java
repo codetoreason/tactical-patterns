@@ -31,7 +31,7 @@ class WarehouseSelector {
         return warehouseWithStock.map(Result::successful)
                                  .orElseGet(() -> Result.failed(
                                          "Insufficient stock for product '%s' x%d in region: %s"
-                                                 .formatted(product.name(), quantity, destinationRegion)
+                                                 .formatted(product.name(), quantity.value(), destinationRegion)
                                  ));
 
     }
