@@ -12,7 +12,7 @@ class CapturingEventPublisher implements EventPublisher {
         lastPublished = event
     }
 
-    void verifyLastPublished(Event expected) {
-        assert lastPublished == expected
+    Event getLastPublished() {
+        lastPublished
     }
 }

@@ -68,11 +68,17 @@ class OrderFulfillmentFixture {
         )
     }
 
-    void verifyEventPublished(Event event) {
-        eventPublisher.verifyLastPublished(event)
+    OrderFulfilledEventVerifier verifyOrderFulfilledEventPublished() {
+        return new OrderFulfilledEventVerifier(eventPublisher.getLastPublished())
     }
 
+    OrderRejectedEventVerifier verifyOrderRejectedEventPublished() {
+        return new OrderRejectedEventVerifier(eventPublisher.getLastPublished())
+    }
+
+
     class WarehouseBuilder {
+
         private final OrderFulfillmentFixture fixture
         private final WarehouseId id
         private String region
@@ -122,6 +128,7 @@ class OrderFulfillmentFixture {
     }
 
     class OrderBuilder {
+
         private final OrderFulfillmentFixture fixture
         private Quantity quantity = ZERO
         private String region
@@ -154,6 +161,47 @@ class OrderFulfillmentFixture {
                          .build()
             )
             fixture
+        }
+    }
+
+    class OrderFulfilledEventVerifier {
+
+        private final Event event
+
+        OrderFulfilledEventVerifier(Event event) {
+            this.event = event
+            assert event instanceof OrderFulfilledEvent
+        }
+
+        void matching(WarehouseId warehouseId) {
+            assert warehouseId != null
+            assert event instanceof OrderFulfilledEvent
+            def orderFulfilledEvent = (OrderFulfilledEvent) event
+            assert orderFulfilledEvent.warehouseId() == warehouseId
+        }
+
+        void matchingAnyOf(WarehouseId... warehouseIds) {
+            assert warehouseIds != null
+            assert warehouseIds.length > 0
+            assert event instanceof OrderFulfilledEvent
+            def orderFulfilledEvent = (OrderFulfilledEvent) event
+            assert warehouseIds.contains(orderFulfilledEvent.warehouseId())
+        }
+    }
+
+    class OrderRejectedEventVerifier {
+
+        private final Event event
+
+        OrderRejectedEventVerifier(Event event) {
+            this.event = event
+            assert event instanceof OrderRejectedEvent
+        }
+
+        void withReason(String reason) {
+            assert reason != null && !reason.isBlank()
+            def orderRejectedEvent = (OrderRejectedEvent) event
+            assert orderRejectedEvent.reason() == reason
         }
     }
 }

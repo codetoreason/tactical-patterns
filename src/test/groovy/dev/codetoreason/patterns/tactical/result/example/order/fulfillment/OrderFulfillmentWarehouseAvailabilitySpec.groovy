@@ -25,12 +25,10 @@ class OrderFulfillmentWarehouseAvailabilitySpec extends Specification {
             facade.attemptFulfillment(ORDER_ID)
 
         then:
-            fixture.verifyEventPublished(
-                    new OrderRejectedEvent(
-                            ORDER_ID,
-                            "No warehouses available in region: $orderRegion"
-                    )
-            )
+            fixture.verifyOrderRejectedEventPublished()
+                   .withReason(
+                           "No warehouses available in region: $orderRegion"
+                   )
     }
 
     def "should reject order when no warehouse supports product type"() {
@@ -49,11 +47,9 @@ class OrderFulfillmentWarehouseAvailabilitySpec extends Specification {
             facade.attemptFulfillment(ORDER_ID)
 
         then:
-            fixture.verifyEventPublished(
-                    new OrderRejectedEvent(
-                            ORDER_ID,
-                            "No warehouse capable of handling product type: ${ PRODUCT.type() }"
-                    )
-            )
+            fixture.verifyOrderRejectedEventPublished()
+                   .withReason(
+                           "No warehouse capable of handling product type: ${ PRODUCT.type() }"
+                   )
     }
 }

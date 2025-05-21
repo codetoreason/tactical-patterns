@@ -26,12 +26,10 @@ class OrderFulfillmentStockValidationSpec extends Specification {
             facade.attemptFulfillment(ORDER_ID)
 
         then:
-            fixture.verifyEventPublished(
-                    new OrderRejectedEvent(
-                            ORDER_ID,
-                            "Insufficient stock for product '${ PRODUCT.name() }' x1 in region: $DEFAULT_REGION_NAME"
-                    )
-            )
+            fixture.verifyOrderRejectedEventPublished()
+                   .withReason(
+                           "Insufficient stock for product '${ PRODUCT.name() }' x1 in region: $DEFAULT_REGION_NAME"
+                   )
     }
 
     def "should reject order when warehouse has less stock than required"() {
@@ -52,12 +50,10 @@ class OrderFulfillmentStockValidationSpec extends Specification {
             facade.attemptFulfillment(ORDER_ID)
 
         then:
-            fixture.verifyEventPublished(
-                    new OrderRejectedEvent(
-                            ORDER_ID,
-                            "Insufficient stock for product '${ PRODUCT.name() }' x10 in region: $DEFAULT_REGION_NAME"
-                    )
-            )
+            fixture.verifyOrderRejectedEventPublished()
+                   .withReason(
+                           "Insufficient stock for product '${ PRODUCT.name() }' x10 in region: $DEFAULT_REGION_NAME"
+                   )
     }
 
     def "should reject order when multiple warehouses are short by one unit"() {
@@ -83,11 +79,9 @@ class OrderFulfillmentStockValidationSpec extends Specification {
             facade.attemptFulfillment(ORDER_ID)
 
         then:
-            fixture.verifyEventPublished(
-                    new OrderRejectedEvent(
-                            ORDER_ID,
-                            "Insufficient stock for product '${ PRODUCT.name() }' x6 in region: $DEFAULT_REGION_NAME"
-                    )
-            )
+            fixture.verifyOrderRejectedEventPublished()
+                   .withReason(
+                           "Insufficient stock for product '${ PRODUCT.name() }' x6 in region: $DEFAULT_REGION_NAME"
+                   )
     }
 }

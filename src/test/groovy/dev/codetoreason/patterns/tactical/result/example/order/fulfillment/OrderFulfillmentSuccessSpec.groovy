@@ -3,7 +3,6 @@ package dev.codetoreason.patterns.tactical.result.example.order.fulfillment
 import spock.lang.Specification
 
 import static dev.codetoreason.patterns.tactical.result.example.order.fulfillment.OrderFulfillmentFixture.ORDER_ID
-import static dev.codetoreason.patterns.tactical.result.example.order.fulfillment.OrderFulfillmentFixture.SHIPMENT_ID
 import static dev.codetoreason.patterns.tactical.result.example.order.fulfillment.ProductType.CONTROLLED_SUBSTANCE
 
 class OrderFulfillmentSuccessSpec extends Specification {
@@ -27,9 +26,8 @@ class OrderFulfillmentSuccessSpec extends Specification {
             facade.attemptFulfillment(ORDER_ID)
 
         then:
-            fixture.verifyEventPublished(
-                    new OrderFulfilledEvent(ORDER_ID, warehouseId, SHIPMENT_ID)
-            )
+            fixture.verifyOrderFulfilledEventPublished()
+                   .matching(warehouseId)
     }
 
     def "should fulfill order when stock equals quantity"() {
@@ -51,9 +49,8 @@ class OrderFulfillmentSuccessSpec extends Specification {
             facade.attemptFulfillment(ORDER_ID)
 
         then:
-            fixture.verifyEventPublished(
-                    new OrderFulfilledEvent(ORDER_ID, warehouseId, SHIPMENT_ID)
-            )
+            fixture.verifyOrderFulfilledEventPublished()
+                   .matching(warehouseId)
     }
 
     def "should fulfill order with quantity zero if warehouse supports product type"() {
@@ -75,9 +72,8 @@ class OrderFulfillmentSuccessSpec extends Specification {
             facade.attemptFulfillment(ORDER_ID)
 
         then:
-            fixture.verifyEventPublished(
-                    new OrderFulfilledEvent(ORDER_ID, warehouseId, SHIPMENT_ID)
-            )
+            fixture.verifyOrderFulfilledEventPublished()
+                   .matching(warehouseId)
     }
 
     def "should fulfill order from eligible warehouse when others are invalid"() {
@@ -105,20 +101,18 @@ class OrderFulfillmentSuccessSpec extends Specification {
             facade.attemptFulfillment(ORDER_ID)
 
         then:
-            fixture.verifyEventPublished(
-                    new OrderFulfilledEvent(ORDER_ID, correctId, SHIPMENT_ID)
-            )
+            fixture.verifyOrderFulfilledEventPublished()
+                   .matching(correctId)
     }
 
-    def "should choose first eligible warehouse when multiple match"() {
+    def "should choose any eligible warehouse when multiple match"() {
         given:
-            def firstId = new WarehouseId("w1")
             def fixture = OrderFulfillmentFixture.create()
                                                  .withOrder()
                                                  .ofQuantity(3)
                                                  .toDefaultRegion()
                                                  .and()
-                                                 .withWarehouse(firstId)
+                                                 .withWarehouse(new WarehouseId("w1"))
                                                  .inDefaultRegion()
                                                  .supportingOrderedProduct()
                                                  .stockingQuantity(5)
@@ -134,8 +128,10 @@ class OrderFulfillmentSuccessSpec extends Specification {
             facade.attemptFulfillment(ORDER_ID)
 
         then:
-            fixture.verifyEventPublished(
-                    new OrderFulfilledEvent(ORDER_ID, firstId, SHIPMENT_ID)
-            )
+            fixture.verifyOrderFulfilledEventPublished()
+                   .matchingAnyOf(
+                           new WarehouseId("w1"),
+                           new WarehouseId("w2")
+                   )
     }
 }

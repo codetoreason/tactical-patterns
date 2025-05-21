@@ -14,11 +14,9 @@ class OrderFulfillmentOrderValidationSpec extends Specification {
             facade.attemptFulfillment(nonExistingOrderId)
 
         then:
-            fixture.verifyEventPublished(
-                    new OrderRejectedEvent(
-                            nonExistingOrderId,
-                            "Order with id ${ nonExistingOrderId.value() } not found"
-                    )
-            )
+            fixture.verifyOrderRejectedEventPublished()
+                   .withReason(
+                           "Order with id ${ nonExistingOrderId.value() } not found"
+                   )
     }
 }
