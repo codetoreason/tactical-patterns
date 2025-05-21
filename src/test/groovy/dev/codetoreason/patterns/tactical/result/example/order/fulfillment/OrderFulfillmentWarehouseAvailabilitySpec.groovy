@@ -4,6 +4,7 @@ import spock.lang.Specification
 
 import static dev.codetoreason.patterns.tactical.result.example.order.fulfillment.OrderFulfillmentFixture.ORDER_ID
 import static dev.codetoreason.patterns.tactical.result.example.order.fulfillment.OrderFulfillmentFixture.PRODUCT
+import static dev.codetoreason.patterns.tactical.result.example.order.fulfillment.ProductType.CONTROLLED_SUBSTANCE
 import static dev.codetoreason.patterns.tactical.result.example.order.fulfillment.ProductType.PERISHABLE
 
 class OrderFulfillmentWarehouseAvailabilitySpec extends Specification {
@@ -16,7 +17,7 @@ class OrderFulfillmentWarehouseAvailabilitySpec extends Specification {
                                                  .toRegion(orderRegion)
                                                  .and()
                                                  .withWarehouse(new WarehouseId("W1"))
-                                                 .assignedToRegion("OTHER-REGION")
+                                                 .inDefaultRegion()
                                                  .and()
             def facade = fixture.buildFacade()
 
@@ -36,9 +37,11 @@ class OrderFulfillmentWarehouseAvailabilitySpec extends Specification {
         given:
             def fixture = OrderFulfillmentFixture.create()
                                                  .withOrder()
+                                                 .toDefaultRegion()
                                                  .and()
                                                  .withWarehouse(new WarehouseId("W2"))
-                                                 .supporting(PERISHABLE)
+                                                 .inDefaultRegion()
+                                                 .supporting(PERISHABLE, CONTROLLED_SUBSTANCE)
                                                  .and()
             def facade = fixture.buildFacade()
 

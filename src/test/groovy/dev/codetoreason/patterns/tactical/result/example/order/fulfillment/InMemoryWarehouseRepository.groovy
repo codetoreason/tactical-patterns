@@ -10,6 +10,9 @@ class InMemoryWarehouseRepository implements WarehouseRepository {
     }
 
     void save(Warehouse warehouse) {
+        if (warehouse.region() == null) {
+            return
+        }
         storage.computeIfAbsent(warehouse.region(), r -> new ArrayList<>())
                .add(warehouse)
     }
