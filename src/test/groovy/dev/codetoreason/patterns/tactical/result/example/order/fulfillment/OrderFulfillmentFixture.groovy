@@ -6,6 +6,30 @@ import dev.codetoreason.patterns.tactical.quantity.Quantity
 import static dev.codetoreason.patterns.tactical.quantity.Quantity.ZERO
 import static dev.codetoreason.patterns.tactical.result.example.order.fulfillment.ProductType.STANDARD
 
+/**
+ * Fixture for testing {@link OrderFulfillmentFacade} scenarios with a clean, consistent DSL.
+ *
+ * This fixture uses a fixed {@code ORDER_ID} and {@code PRODUCT} across all tests.
+ * The goal is to decouple test intent from redundant data setup, and focus on variations
+ * in warehouse configuration and order quantity.
+ *
+ * Why this design?
+ * - All tests evaluate whether the system can successfully fulfill a specific order
+ *   based on warehouse availability and capabilities.
+ * - The actual order data (ID, product type, name, etc.) is not under test — only fulfillment behavior is.
+ * - By standardizing the order, tests can:
+ *     • express intent more clearly through fluent builders,
+ *     • reduce setup noise and duplication,
+ *     • highlight the conditions under which fulfillment succeeds or fails.
+ *
+ * You can override default values if needed (e.g. for cross-product tests), but by default:
+ * - {@code PRODUCT} has type {@code STANDARD} and ID {@code PROD-1}
+ * - {@code ORDER_ID} is {@code ORDER-1}
+ * - {@code SHIPMENT_ID} is fixed for test determinism
+ *
+ * This fixture is designed for readability, reuse, and expressiveness — not maximal flexibility.
+ */
+
 class OrderFulfillmentFixture {
 
     static final OrderId ORDER_ID = new OrderId("ORDER-1")
