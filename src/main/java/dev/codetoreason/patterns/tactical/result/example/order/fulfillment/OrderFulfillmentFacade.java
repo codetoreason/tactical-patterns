@@ -24,13 +24,20 @@ public class OrderFulfillmentFacade {
     public void attemptFulfillment(OrderId orderId) {
         var maybeOrder = orderRepository.findById(orderId);
         if (maybeOrder.isEmpty()) {
-            eventPublisher.publish(new OrderRejectedEvent(orderId, "Order not found"));
+            eventPublisher.publish(
+                    new OrderRejectedEvent(
+                            orderId,
+                            "Order with id %s not found".formatted(orderId.value())
+                    )
+            );
             return;
         }
         var order = maybeOrder.get();
         var selectionResult = warehouseSelector.select(order);
         if (selectionResult.isFailure()) {
-            eventPublisher.publish(new OrderRejectedEvent(orderId, selectionResult.message()));
+            eventPublisher.publish(
+                    new OrderRejectedEvent(orderId, selectionResult.message())
+            );
             return;
         }
         var warehouse = selectionResult.value()
@@ -39,7 +46,9 @@ public class OrderFulfillmentFacade {
                                        ));
         var warehouseId = warehouse.id();
         var shipmentId = shippingService.dispatch(orderId, warehouseId);
-        eventPublisher.publish(new OrderFulfilledEvent(orderId, warehouseId, shipmentId));
+        eventPublisher.publish(
+                new OrderFulfilledEvent(orderId, warehouseId, shipmentId)
+        );
     }
 }
 

@@ -15,7 +15,10 @@ class OrderFulfillmentOrderValidationSpec extends Specification {
 
         then:
             fixture.verifyEventPublished(
-                    new OrderRejectedEvent(nonExistingOrderId, "Order not found")
+                    new OrderRejectedEvent(
+                            nonExistingOrderId,
+                            "Order with id ${ nonExistingOrderId.value() } not found"
+                    )
             )
     }
 }
