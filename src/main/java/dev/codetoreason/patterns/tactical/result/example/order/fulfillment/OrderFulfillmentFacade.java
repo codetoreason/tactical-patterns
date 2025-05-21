@@ -33,7 +33,7 @@ public class OrderFulfillmentFacade {
             return;
         }
         var order = maybeOrder.get();
-        var selectionResult = warehouseSelector.select(order);
+        var selectionResult = warehouseSelector.selectFor(order);
         if (selectionResult.isFailure()) {
             eventPublisher.publish(
                     new OrderRejectedEvent(orderId, selectionResult.message())

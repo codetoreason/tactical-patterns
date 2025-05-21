@@ -10,7 +10,7 @@ class WarehouseSelector {
         this.warehouseRepository = warehouseRepository;
     }
 
-    Result<Warehouse> select(Order order) {
+    Result<Warehouse> selectFor(Order order) {
         var destinationRegion = order.destinationRegion();
         var regionWarehouses = warehouseRepository.findByRegion(destinationRegion);
         if (regionWarehouses.isEmpty()) {
