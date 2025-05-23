@@ -18,7 +18,7 @@ import java.util.function.Predicate;
  *
  * @param <T> the type being validated
  */
-public final class Rule<T> {
+public class Rule<T> {
 
     private final Predicate<T> predicate;
     private final FailureReasonFactory<T> failureReasonFactory;

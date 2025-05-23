@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @param <T> the type being validated
  */
-public final class Rules<T> {
+public class Rules<T> {
 
     private final List<Rule<T>> all;
 
