@@ -8,6 +8,7 @@ package dev.codetoreason.patterns.tactical.rule;
  */
 @FunctionalInterface
 public interface RuleFactory<T> {
+
     /**
      * Creates a new rule instance.
      *
