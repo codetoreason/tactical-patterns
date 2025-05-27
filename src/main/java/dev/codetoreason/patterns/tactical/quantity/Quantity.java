@@ -12,7 +12,7 @@ package dev.codetoreason.patterns.tactical.quantity;
  * <p>Usage examples:
  * <pre>{@code
  * Quantity five = Quantity.of(5);
- * Quantity zero = Quantity.zero();
+ * Quantity zero = Quantity.ZERO;
  * boolean ok = warehouse.hasProduct(product, five);
  * }</pre>
  *
