@@ -1,4 +1,4 @@
-package dev.codetoreason.patterns.tactical.rule.example.professor.employment;
+package dev.codetoreason.patterns.tactical.rule.example.university.professor.employment;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

@@ -1,4 +1,4 @@
-package dev.codetoreason.patterns.tactical.rule.example.professor.employment;
+package dev.codetoreason.patterns.tactical.rule.example.university.professor.employment;
 
 record ProfessorEmploymentConfig(
         int minYearsOfExperience,
