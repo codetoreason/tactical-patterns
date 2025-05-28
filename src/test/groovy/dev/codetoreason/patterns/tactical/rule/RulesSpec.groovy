@@ -9,6 +9,11 @@ class RulesSpec extends Specification {
             Rules.of().examine("any").isSuccess()
     }
 
+    def "should return OK message when success"() {
+        expect:
+            Rules.of().examine("any").message() == "OK"
+    }
+
     def "should return success when rules list is empty"() {
         expect:
             Rules.of([]).examine("input").isSuccess()
@@ -158,22 +163,55 @@ class RulesSpec extends Specification {
             rules.examine(0).isFailure()
     }
 
-    def "should throw when composing builder with nulled rule"() {
+    def "should throw when collection is null"() {
         when:
-            Rules.when(null)
-                 .compose()
+            Rules.of((Collection) null)
 
         then:
-            thrown(NullPointerException)
+            def ex = thrown(IllegalArgumentException)
+            ex.message == "Rules must be non-null"
     }
 
-    def "should throw when rules list contains null"() {
+    def "should throw when collection contains null"() {
+        given:
+            def validRule = Rule.when((String s) -> true)
+                                .orElse("Should never fail")
+
         when:
-            Rules.of([null])
+            Rules.of([validRule, null])
 
         then:
-            thrown(NullPointerException)
+            def ex = thrown(IllegalArgumentException)
+            ex.message == "Each particular rule must be non-null"
     }
+
+    def "should throw when varargs is null"() {
+        when:
+            Rules.of((Rule[]) null)
+
+        then:
+            def ex = thrown(IllegalArgumentException)
+            ex.message == "Rules must be non-null"
+    }
+
+    def "should throw when varargs contains null"() {
+        given:
+            def validRule = Rule.when((String s) -> true)
+                                .orElse("Should never fail")
+
+        when:
+            Rules.of(validRule, null)
+
+        then:
+            def ex = thrown(IllegalArgumentException)
+            ex.message == "Each particular rule must be non-null"
+    }
+
+    def "should return success when no rules (empty varargs)"() {
+        expect:
+            Rules.of().examine("input").isSuccess()
+    }
+
 
     def "should build rules using mixed Rule and RuleFactory in DSL"() {
         given:

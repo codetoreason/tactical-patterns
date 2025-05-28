@@ -3,8 +3,10 @@ package dev.codetoreason.patterns.tactical.rule;
 import dev.codetoreason.patterns.tactical.result.OperationResult;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A composite of multiple {@link Rule} instances that are applied sequentially to a given value.
@@ -32,29 +34,58 @@ public class Rules<T> {
     }
 
     /**
-     * Creates a new {@code Rules} instance from any {@link Collection} of rules.
-     * The resulting internal list is immutable and preserves insertion order.
+     * Creates a new {@code Rules} instance from a {@link Collection} of {@link Rule} objects.
+     * <p>
+     * The internal list is immutable and preserves insertion order.
+     * <p>
+     * If the collection is {@code null} or contains {@code null} elements,
+     * an {@link IllegalArgumentException} is thrown.
+     * This method does not silently ignore {@code null}s to prevent hidden validation issues.
      *
-     * @param rules the collection of rules
+     * @param rules the collection of rules to apply; must not be {@code null} or contain {@code null} entries
      * @param <T>   the type being validated
      * @return a {@code Rules} instance
+     * @throws IllegalArgumentException if the collection or any rule is {@code null}
      */
     public static <T> Rules<T> of(Collection<Rule<T>> rules) {
+        if (rules == null) {
+            throw new IllegalArgumentException("Rules must be non-null");
+        }
+        var anyRuleIsNull = rules.stream()
+                                 .anyMatch(Objects::isNull);
+        if (anyRuleIsNull) {
+            throw new IllegalArgumentException("Each particular rule must be non-null");
+        }
         return new Rules<>(List.copyOf(rules));
     }
 
     /**
-     * Creates a new {@code Rules} instance from a vararg list of rules.
-     * Useful for quick inline composition of multiple rules.
+     * Creates a new {@code Rules} instance from a vararg list of {@link Rule} objects.
+     * <p>
+     * This is useful for quick, inline composition of multiple rules.
+     * <p>
+     * If the array is {@code null} or contains {@code null} elements,
+     * an {@link IllegalArgumentException} is thrown.
+     * This method enforces explicit null handling to avoid silent validation failures.
      *
-     * @param rules the rules to apply
+     * @param rules the rules to apply; must not be {@code null} or contain {@code null} entries
      * @param <T>   the type being validated
      * @return a {@code Rules} instance
+     * @throws IllegalArgumentException if the array or any rule is {@code null}
      */
     @SafeVarargs
     public static <T> Rules<T> of(Rule<T>... rules) {
+        if (rules == null) {
+            throw new IllegalArgumentException("Rules must be non-null");
+        }
+        var anyRuleIsNull = Arrays.stream(rules)
+                                  .anyMatch(Objects::isNull);
+        if (anyRuleIsNull) {
+            throw new IllegalArgumentException("Each particular rule must be non-null");
+        }
         return new Rules<>(List.of(rules));
     }
+
 
     /**
      * Starts a fluent DSL builder with a single rule.
