@@ -108,4 +108,12 @@ class QuantitySpec extends Specification {
             3 | 5 || true
             5 | 5 || true
     }
+
+    def "should return correct string representation"() {
+        given:
+            def quantity = Quantity.of(15)
+
+        expect:
+            quantity.toString() == "Quantity[value=15]"
+    }
 }
