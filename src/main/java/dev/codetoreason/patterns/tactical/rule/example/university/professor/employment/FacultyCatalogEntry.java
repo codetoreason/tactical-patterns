@@ -1,17 +1,15 @@
 package dev.codetoreason.patterns.tactical.rule.example.university.professor.employment;
 
+import lombok.Builder;
+
+@Builder
 record FacultyCatalogEntry(
         FacultyId id,
         String name,
-        FieldOfStudy mainFieldOfStudy,
-        FieldsOfStudies secondaryFieldOfStudies
+        FieldsOfStudies fieldsOfStudies
 ) {
 
     public int fieldsOfStudiesNumber() {
-        return secondaryFieldOfStudies.count() + 1;
-    }
-
-    public FieldsOfStudies allFieldsOfStudies() {
-        return secondaryFieldOfStudies.add(mainFieldOfStudy);
+        return fieldsOfStudies.count();
     }
 }

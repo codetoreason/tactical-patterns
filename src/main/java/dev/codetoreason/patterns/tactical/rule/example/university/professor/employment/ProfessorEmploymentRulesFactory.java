@@ -62,7 +62,7 @@ class ProfessorEmploymentRulesFactory {
             var minMatchedFieldsOfStudy = config.minMatchedFieldsOfStudy();
             var professorFieldsOfStudy = context.application().fieldsOfStudies();
             var faculty = context.faculty();
-            var facultyFieldsOfStudy = faculty.allFieldsOfStudies();
+            var facultyFieldsOfStudy = faculty.fieldsOfStudies();
             var facultyHasFewFieldsOfStudies = faculty.fieldsOfStudiesNumber() < minMatchedFieldsOfStudy;
             return facultyHasFewFieldsOfStudies
                     ? professorFieldsOfStudy.matchesAllOf(facultyFieldsOfStudy)
