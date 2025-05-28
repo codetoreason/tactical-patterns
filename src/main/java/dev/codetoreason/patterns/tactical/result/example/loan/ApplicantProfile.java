@@ -1,5 +1,6 @@
 package dev.codetoreason.patterns.tactical.result.example.loan;
 
+import dev.codetoreason.patterns.tactical.infra.repository.Entity;
 import lombok.Builder;
 
 @Builder(toBuilder = true)
@@ -8,7 +9,7 @@ record ApplicantProfile(
         EmploymentHistory employmentHistory,
         CreditHistory creditHistory,
         DebtProfile debtProfile
-) {
+) implements Entity<ApplicantId> {
 
     CreditAssessmentData toCreditAssessmentData() {
         return CreditAssessmentData.builder()

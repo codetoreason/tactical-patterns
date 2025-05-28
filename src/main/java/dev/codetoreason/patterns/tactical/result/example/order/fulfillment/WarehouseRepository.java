@@ -1,9 +1,11 @@
 package dev.codetoreason.patterns.tactical.result.example.order.fulfillment;
 
+import dev.codetoreason.patterns.tactical.infra.repository.EntityRepository;
+
 import java.util.List;
 
-interface WarehouseRepository {
+interface WarehouseRepository extends EntityRepository<Warehouse, WarehouseId> {
 
-    List<Warehouse> findByRegion(String region);
+    List<Warehouse> findAllByRegion(String region);
 
 }

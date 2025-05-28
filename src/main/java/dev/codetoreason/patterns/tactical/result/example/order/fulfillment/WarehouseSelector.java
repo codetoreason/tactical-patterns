@@ -12,7 +12,7 @@ class WarehouseSelector {
 
     Result<Warehouse> selectFor(Order order) {
         var destinationRegion = order.destinationRegion();
-        var regionWarehouses = warehouseRepository.findByRegion(destinationRegion);
+        var regionWarehouses = warehouseRepository.findAllByRegion(destinationRegion);
         if (regionWarehouses.isEmpty()) {
             return Result.failed("No warehouses available in region: " + destinationRegion);
         }

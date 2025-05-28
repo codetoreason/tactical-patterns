@@ -1,9 +1,6 @@
 package dev.codetoreason.patterns.tactical.result.example.order.fulfillment;
 
-import java.util.Optional;
+import dev.codetoreason.patterns.tactical.infra.repository.EntityRepository;
 
-interface OrderRepository {
-
-    Optional<Order> findById(OrderId orderId);
-
+interface OrderRepository extends EntityRepository<Order, OrderId> {
 }

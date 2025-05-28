@@ -1,15 +1,6 @@
 package dev.codetoreason.patterns.tactical.result.example.order.fulfillment
 
-class InMemoryOrderRepository implements OrderRepository {
+import dev.codetoreason.patterns.tactical.infra.repository.InMemoryEntityRepository
 
-    private final Map<OrderId, Order> storage = new HashMap<>()
-
-    @Override
-    Optional<Order> findById(OrderId orderId) {
-        return Optional.ofNullable(storage.get(orderId))
-    }
-
-    void save(Order order) {
-        storage.put(order.id(), order)
-    }
+class InMemoryOrderRepository extends InMemoryEntityRepository<Order, OrderId> implements OrderRepository {
 }

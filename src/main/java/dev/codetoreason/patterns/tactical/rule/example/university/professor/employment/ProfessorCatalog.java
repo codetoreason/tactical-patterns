@@ -1,14 +1,6 @@
 package dev.codetoreason.patterns.tactical.rule.example.university.professor.employment;
 
-import java.util.Optional;
+import dev.codetoreason.patterns.tactical.infra.repository.EntityRepository;
 
-interface ProfessorCatalog {
-
-    void save(ProfessorCatalogEntry professor);
-
-    Optional<ProfessorCatalogEntry> findById(ProfessorId id);
-
-    default ProfessorCatalogEntry getBtId(ProfessorId id) {
-        return findById(id).orElseThrow();
-    }
+interface ProfessorCatalog extends EntityRepository<ProfessorCatalogEntry, ProfessorId> {
 }

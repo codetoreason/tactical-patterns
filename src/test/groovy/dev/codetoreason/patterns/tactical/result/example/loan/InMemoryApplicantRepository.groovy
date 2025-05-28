@@ -1,15 +1,7 @@
 package dev.codetoreason.patterns.tactical.result.example.loan
 
-class InMemoryApplicantRepository implements ApplicantRepository {
+import dev.codetoreason.patterns.tactical.infra.repository.InMemoryEntityRepository
 
-    private final def storage = new HashMap<ApplicantId, ApplicantProfile>()
-
-    @Override
-    Optional<ApplicantProfile> findProfileById(ApplicantId id) {
-        Optional.ofNullable(storage.get(id))
-    }
-
-    void save(ApplicantProfile profile) {
-        storage.put(profile.id(), profile)
-    }
+class InMemoryApplicantRepository extends InMemoryEntityRepository<ApplicantProfile, ApplicantId>
+        implements ApplicantProfileRepository {
 }

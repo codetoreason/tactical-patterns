@@ -1,20 +1,15 @@
 package dev.codetoreason.patterns.tactical.result.example.order.fulfillment
 
-class InMemoryWarehouseRepository implements WarehouseRepository {
+import dev.codetoreason.patterns.tactical.infra.repository.InMemoryEntityRepository
 
-    private final Map<String, List<Warehouse>> storage = new HashMap<>()
+class InMemoryWarehouseRepository extends InMemoryEntityRepository<Warehouse, WarehouseId>
+        implements WarehouseRepository {
 
     @Override
-    List<Warehouse> findByRegion(String region) {
-        storage.getOrDefault(region, List.of())
-    }
-
-    void save(Warehouse warehouse) {
-        if (warehouse.region() == null) {
-            return
+    List<Warehouse> findAllByRegion(String region) {
+        findAllBy {
+            it.region().equals(region)
         }
-        storage.computeIfAbsent(warehouse.region(), r -> new ArrayList<>())
-               .add(warehouse)
     }
 }
 

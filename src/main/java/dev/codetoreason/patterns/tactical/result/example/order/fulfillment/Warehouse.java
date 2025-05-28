@@ -1,5 +1,6 @@
 package dev.codetoreason.patterns.tactical.result.example.order.fulfillment;
 
+import dev.codetoreason.patterns.tactical.infra.repository.Entity;
 import dev.codetoreason.patterns.tactical.quantity.Quantity;
 import lombok.Builder;
 
@@ -14,7 +15,7 @@ record Warehouse(
         String region,
         Set<ProductType> supportedTypes,
         Map<ProductId, Quantity> stockLevels
-) {
+) implements Entity<WarehouseId> {
 
     boolean hasProduct(Product product, Quantity quantity) {
         if (quantity.isZero()) {

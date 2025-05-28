@@ -4,7 +4,7 @@ import java.util.List;
 
 public class LoanEligibilityFacadeFactory {
 
-    LoanEligibilityFacade create(ApplicantRepository applicantRepository) {
+    LoanEligibilityFacade create(ApplicantProfileRepository applicantRepository) {
         return new LoanEligibilityFacade(
                 applicantRepository,
                 new LoanEligibilityAssessor(

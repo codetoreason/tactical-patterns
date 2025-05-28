@@ -4,11 +4,11 @@ import java.util.Optional;
 
 public class LoanEligibilityFacade {
 
-    private final ApplicantRepository applicantRepository;
+    private final ApplicantProfileRepository applicantRepository;
     private final LoanEligibilityAssessor loanEligibilityAssessor;
 
     LoanEligibilityFacade(
-            ApplicantRepository applicantRepository,
+            ApplicantProfileRepository applicantRepository,
             LoanEligibilityAssessor loanEligibilityAssessor
     ) {
         this.applicantRepository = applicantRepository;
@@ -16,7 +16,7 @@ public class LoanEligibilityFacade {
     }
 
     public Optional<LoanEligibilityResult> assessEligibility(ApplicantId id) {
-        return applicantRepository.findProfileById(id)
+        return applicantRepository.findById(id)
                                   .map(loanEligibilityAssessor::assess)
                                   .map(loanEligibility -> new LoanEligibilityResult(id, loanEligibility));
     }
