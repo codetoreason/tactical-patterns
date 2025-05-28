@@ -36,9 +36,9 @@ class ProfessorEmploymentRulesFactory {
 
         String buildFailureMessage(ProfessorEmploymentContext context) {
             var application = context.application();
-            return "Professor %s cannot be employed at faculty with id %s because %s"
-                    .formatted(application.professorName(), application.facultyId(), specificReason());
-
+            var faculty = context.faculty();
+            return "%s cannot be employed at %s because %s"
+                    .formatted(application.professorName(), faculty.name(), specificReason());
         }
     }
 

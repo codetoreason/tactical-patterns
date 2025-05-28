@@ -1,6 +1,7 @@
 package dev.codetoreason.patterns.tactical.rule.example.university.professor.employment;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -10,6 +11,12 @@ import static java.util.stream.Collectors.toSet;
 public record FieldsOfStudies(
         Collection<FieldOfStudy> all
 ) {
+
+    private static final FieldsOfStudies EMPTY = new FieldsOfStudies(Set.of());
+
+    public static FieldsOfStudies empty() {
+        return EMPTY;
+    }
 
     public static Collector<FieldOfStudy, Object, FieldsOfStudies> toFieldsOfStudies() {
         return collectingAndThen(
