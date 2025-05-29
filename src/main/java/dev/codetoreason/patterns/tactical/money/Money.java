@@ -118,5 +118,54 @@ public record Money(BigDecimal amount, Currency currency) {
     public boolean isNegative() {
         return amount.compareTo(ZERO) < 0;
     }
+
+    /**
+     * Returns whether this monetary amount is denominated in the given currency.
+     * <p>
+     * This method compares currencies by reference identity and throws if the provided currency is {@code null}.
+     *
+     * @param currency the currency to compare against (must not be {@code null})
+     * @return {@code true} if the currencies match, {@code false} otherwise
+     * @throws IllegalArgumentException if {@code currency} is {@code null}
+     */
+    public boolean matchesCurrency(Currency currency) {
+        if (currency == null) {
+            throw new IllegalArgumentException("Currency must not be null");
+        }
+        return this.currency == currency;
+    }
+
+    /**
+     * Converts this monetary amount to the given target currency using the specified exchange rate provider.
+     * <p>
+     * This method performs a currency conversion using a conversion factor obtained from the given provider.
+     * If the target currency is the same as this money's currency, the method returns {@code this}.
+     * Otherwise, it applies the conversion factor and returns a new {@code Money} instance in the target currency.
+     *
+     * @param targetCurrency the currency to convert to (must not be {@code null})
+     * @param rateProvider   the exchange rate provider that supplies conversion factors (must not be {@code null})
+     * @return a new {@code Money} instance in the {@code targetCurrency}
+     * @throws IllegalArgumentException if {@code targetCurrency} or {@code rateProvider} is {@code null},
+     *                                  or if the provider does not supply a conversion factor for the current currency
+     */
+    public Money convertTo(Currency targetCurrency, TargetCurrencyRateProvider rateProvider) {
+        if (targetCurrency == null) {
+            throw new IllegalArgumentException("Target currency must not be null");
+        }
+        if (rateProvider == null) {
+            throw new IllegalArgumentException("Rate provider must not be null");
+        }
+        if (currency == targetCurrency) {
+            return this;
+        }
+        var factor = rateProvider.factorFrom(currency);
+        if (factor == null) {
+            throw new IllegalArgumentException("Missing exchange rate from " + currency + " to " + targetCurrency);
+        }
+        return Money.of(
+                amount.multiply(factor),
+                targetCurrency
+        );
+    }
 }
 

@@ -3,7 +3,10 @@ package dev.codetoreason.patterns.tactical.money
 import spock.lang.Specification
 
 import static dev.codetoreason.patterns.tactical.money.Currency.EUR
+import static dev.codetoreason.patterns.tactical.money.Currency.PLN
 import static dev.codetoreason.patterns.tactical.money.Currency.USD
+import static java.math.BigDecimal.TEN
+import static java.math.BigDecimal.ZERO
 
 class MoneySpec extends Specification {
 
@@ -20,7 +23,7 @@ class MoneySpec extends Specification {
             def money = Money.zero(USD)
 
         then:
-            money.amount() == BigDecimal.ZERO
+            money.amount() == ZERO
             money.currency() == USD
     }
 
@@ -44,7 +47,7 @@ class MoneySpec extends Specification {
 
     def "should throw when creating money with null currency"() {
         when:
-            Money.of(BigDecimal.TEN, null)
+            Money.of(TEN, null)
 
         then:
             def ex = thrown(IllegalArgumentException)
@@ -75,8 +78,8 @@ class MoneySpec extends Specification {
 
     def "should throw when adding money with different currency"() {
         given:
-            def a = Money.of(BigDecimal.TEN, USD)
-            def b = Money.of(BigDecimal.TEN, EUR)
+            def a = Money.of(TEN, USD)
+            def b = Money.of(TEN, EUR)
 
         when:
             a.add(b)
@@ -101,7 +104,7 @@ class MoneySpec extends Specification {
 
     def "should throw when subtracting money with different currency"() {
         given:
-            def a = Money.of(BigDecimal.TEN, USD)
+            def a = Money.of(TEN, USD)
             def b = Money.of(BigDecimal.ONE, EUR)
 
         when:
@@ -115,6 +118,7 @@ class MoneySpec extends Specification {
     def "should detect zero money"() {
         expect:
             Money.zero(USD).isZero()
+            Money.of(ZERO, USD).isZero()
     }
 
     def "should correctly identify positive money values"() {
@@ -130,7 +134,6 @@ class MoneySpec extends Specification {
             !Money.of(new BigDecimal("0.00"), USD).isNegative()
             Money.of(new BigDecimal("-3.00"), USD).isNegative()
     }
-
 
     def "should consider two money instances equal if value and currency match"() {
         expect:
@@ -160,5 +163,117 @@ class MoneySpec extends Specification {
         expect:
             moneyA == moneyB
             moneyA.hashCode() == moneyB.hashCode()
+    }
+
+    def "matchesCurrency returns true for same currency"() {
+        given:
+            def money = Money.of(BigDecimal.valueOf(100), PLN)
+
+        expect:
+            money.matchesCurrency(PLN)
+    }
+
+    def "matchesCurrency returns false for different currency"() {
+        given:
+            def money = Money.of(BigDecimal.valueOf(100), PLN)
+
+        expect:
+            !money.matchesCurrency(EUR)
+    }
+
+    def "matchesCurrency throws on null argument"() {
+        given:
+            def money = Money.of(BigDecimal.valueOf(100), PLN)
+
+        when:
+            money.matchesCurrency(null)
+
+        then:
+            def ex = thrown(IllegalArgumentException)
+            ex.message == "Currency must not be null"
+    }
+
+    def "convertTo returns same instance when targetCurrency is same as source"() {
+        given:
+            def money = Money.of(BigDecimal.valueOf(100), EUR)
+            def rateProvider = Mock(TargetCurrencyRateProvider)
+
+        when:
+            def result = money.convertTo(EUR, rateProvider)
+
+        then:
+            result.is(money)
+        and:
+            0 * rateProvider.factorFrom(_)
+    }
+
+    def "convertTo returns new Money with converted amount"() {
+        given:
+            def money = Money.of(BigDecimal.valueOf(100), PLN)
+            def rateProvider = Mock(TargetCurrencyRateProvider) {
+                factorFrom(PLN) >> BigDecimal.valueOf(0.25)
+            }
+
+        when:
+            def result = money.convertTo(EUR, rateProvider)
+
+        then:
+            result.amount() == BigDecimal.valueOf(25)
+            result.currency() == EUR
+    }
+
+    def "convertTo throws if target currency is null"() {
+        given:
+            def money = Money.of(BigDecimal.valueOf(100), USD)
+            def rateProvider = Mock(TargetCurrencyRateProvider)
+
+        when:
+            money.convertTo(null, rateProvider)
+
+        then:
+            def ex = thrown(IllegalArgumentException)
+            ex.message == "Target currency must not be null"
+    }
+
+    def "convertTo throws if rate provider is null"() {
+        given:
+            def money = Money.of(BigDecimal.valueOf(100), USD)
+
+        when:
+            money.convertTo(EUR, null)
+
+        then:
+            def ex = thrown(IllegalArgumentException)
+            ex.message == "Rate provider must not be null"
+    }
+
+    def "convertTo throws if rate provider returns null"() {
+        given:
+            def money = Money.of(BigDecimal.valueOf(100), USD)
+            def rateProvider = Mock(TargetCurrencyRateProvider) {
+                factorFrom(USD) >> null
+            }
+
+        when:
+            money.convertTo(EUR, rateProvider)
+
+        then:
+            def ex = thrown(IllegalArgumentException)
+            ex.message == "Missing exchange rate from USD to EUR"
+    }
+
+    def "convertTo handles zero amount correctly"() {
+        given:
+            def money = Money.zero(PLN)
+            def rateProvider = Mock(TargetCurrencyRateProvider) {
+                factorFrom(PLN) >> BigDecimal.valueOf(4.5)
+            }
+
+        when:
+            def result = money.convertTo(EUR, rateProvider)
+
+        then:
+            result.amount() == ZERO
+            result.currency() == EUR
     }
 }
