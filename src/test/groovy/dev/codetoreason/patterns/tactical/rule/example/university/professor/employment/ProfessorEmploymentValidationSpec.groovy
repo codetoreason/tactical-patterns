@@ -36,8 +36,13 @@ class ProfessorEmploymentValidationSpec extends Specification {
         expect:
             with(RULES.examine(context)) {
                 isFailure()
-                message().contains("has too small experience")
+                with(message()) {
+                    contains(ZUCK)
+                    contains(IT_FACULTY_NAME)
+                    contains("has too small experience")
+                }
             }
+
     }
 
     def "should fail when fields of study don’t match enough"() {
@@ -55,7 +60,11 @@ class ProfessorEmploymentValidationSpec extends Specification {
         expect:
             with(RULES.examine(context)) {
                 isFailure()
-                message().contains("does not match faculty fields of studies")
+                with(message()) {
+                    contains(ZUCK)
+                    contains(IT_FACULTY_NAME)
+                    contains("does not match faculty fields of studies")
+                }
             }
     }
 
@@ -74,7 +83,11 @@ class ProfessorEmploymentValidationSpec extends Specification {
         expect:
             with(RULES.examine(context)) {
                 isFailure()
-                message().contains("does not match faculty fields of studies")
+                with(message()) {
+                    contains(ZUCK)
+                    contains(IT_FACULTY_NAME)
+                    contains("does not match faculty fields of studies")
+                }
             }
     }
 
@@ -93,7 +106,11 @@ class ProfessorEmploymentValidationSpec extends Specification {
         expect:
             with(RULES.examine(context)) {
                 isFailure()
-                message().contains("does not match faculty fields of studies")
+                with(message()) {
+                    contains(ZUCK)
+                    contains(IT_FACULTY_NAME)
+                    contains("does not match faculty fields of studies")
+                }
             }
     }
 
