@@ -163,7 +163,7 @@ class RulesSpec extends Specification {
             rules.examine(0).isFailure()
     }
 
-    def "should throw when collection is null"() {
+    def "should throw when collection is null in Rules.of(...)"() {
         when:
             Rules.of((Collection) null)
 
@@ -172,7 +172,7 @@ class RulesSpec extends Specification {
             ex.message == "Rules must be non-null"
     }
 
-    def "should throw when collection contains null"() {
+    def "should throw when collection contains null in Rules.of(...)"() {
         given:
             def validRule = Rule.when((String s) -> true)
                                 .orElse("Should never fail")
@@ -185,7 +185,7 @@ class RulesSpec extends Specification {
             ex.message == "Each particular rule must be non-null"
     }
 
-    def "should throw when varargs is null"() {
+    def "should throw when varargs is null in Rules.of(...)"() {
         when:
             Rules.of((Rule[]) null)
 
@@ -194,7 +194,7 @@ class RulesSpec extends Specification {
             ex.message == "Rules must be non-null"
     }
 
-    def "should throw when varargs contains null"() {
+    def "should throw when varargs contains null in Rules.of(...)"() {
         given:
             def validRule = Rule.when((String s) -> true)
                                 .orElse("Should never fail")
@@ -207,11 +207,32 @@ class RulesSpec extends Specification {
             ex.message == "Each particular rule must be non-null"
     }
 
+    def "should throw when RuleFactory is null in Rules.when(...)"() {
+        when:
+            Rules.when((RuleFactory<String>) null)
+
+        then:
+            def ex = thrown(IllegalArgumentException)
+            ex.message == "Rule factory must be non-null"
+    }
+
+    def "should throw when RuleFactory is null in RulesBuilder.and(...)"() {
+        given:
+            def rule = Rule.when((String s) -> true).orElse("ok")
+            def builder = Rules.when(rule)
+
+        when:
+            builder.and((RuleFactory<String>) null)
+
+        then:
+            def ex = thrown(IllegalArgumentException)
+            ex.message == "Rule factory must be non-null"
+    }
+
     def "should return success when no rules (empty varargs)"() {
         expect:
             Rules.of().examine("input").isSuccess()
     }
-
 
     def "should build rules using mixed Rule and RuleFactory in DSL"() {
         given:
