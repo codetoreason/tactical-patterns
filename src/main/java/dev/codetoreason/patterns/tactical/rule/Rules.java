@@ -106,6 +106,9 @@ public class Rules<T> {
      * @return a {@link RulesBuilder} instance
      */
     public static <T> RulesBuilder<T> when(RuleFactory<T> ruleFactory) {
+        if (ruleFactory == null) {
+            throw new IllegalArgumentException("Rule factory must be non-null");
+        }
         return new RulesBuilder<>(ruleFactory.create());
     }
 
@@ -170,6 +173,9 @@ public class Rules<T> {
          * @return this builder instance
          */
         public RulesBuilder<T> and(RuleFactory<T> ruleFactory) {
+            if (ruleFactory == null) {
+                throw new IllegalArgumentException("Rule factory must be non-null");
+            }
             return and(ruleFactory.create());
         }
 
