@@ -1,5 +1,6 @@
 package dev.codetoreason.patterns.tactical.rule.example.university.professor.employment
 
+
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -33,16 +34,16 @@ class ProfessorEmploymentValidationSpec extends Specification {
                 })
             }
 
-        expect:
-            with(RULES.examine(context)) {
-                isFailure()
-                with(message()) {
-                    contains(ZUCK)
-                    contains(IT_FACULTY_NAME)
-                    contains("has too small experience")
-                }
-            }
+        when:
+            def result = RULES.examine(context)
 
+        then:
+            result.isFailure()
+            with(result.message()) {
+                contains(ZUCK)
+                contains(IT_FACULTY_NAME)
+                contains("has too small experience")
+            }
     }
 
     def "should fail when fields of study don’t match enough"() {
@@ -57,14 +58,15 @@ class ProfessorEmploymentValidationSpec extends Specification {
                 })
             }
 
-        expect:
-            with(RULES.examine(context)) {
-                isFailure()
-                with(message()) {
-                    contains(ZUCK)
-                    contains(IT_FACULTY_NAME)
-                    contains("does not match faculty fields of studies")
-                }
+        when:
+            def result = RULES.examine(context)
+
+        then:
+            result.isFailure()
+            with(result.message()) {
+                contains(ZUCK)
+                contains(IT_FACULTY_NAME)
+                contains("does not match faculty fields of studies")
             }
     }
 
@@ -80,14 +82,15 @@ class ProfessorEmploymentValidationSpec extends Specification {
                 })
             }
 
-        expect:
-            with(RULES.examine(context)) {
-                isFailure()
-                with(message()) {
-                    contains(ZUCK)
-                    contains(IT_FACULTY_NAME)
-                    contains("does not match faculty fields of studies")
-                }
+        when:
+            def result = RULES.examine(context)
+
+        then:
+            result.isFailure()
+            with(result.message()) {
+                contains(ZUCK)
+                contains(IT_FACULTY_NAME)
+                contains("does not match faculty fields of studies")
             }
     }
 
@@ -103,14 +106,15 @@ class ProfessorEmploymentValidationSpec extends Specification {
                 })
             }
 
-        expect:
-            with(RULES.examine(context)) {
-                isFailure()
-                with(message()) {
-                    contains(ZUCK)
-                    contains(IT_FACULTY_NAME)
-                    contains("does not match faculty fields of studies")
-                }
+        when:
+            def result = RULES.examine(context)
+
+        then:
+            result.isFailure()
+            with(result.message()) {
+                contains(ZUCK)
+                contains(IT_FACULTY_NAME)
+                contains("does not match faculty fields of studies")
             }
     }
 
@@ -160,25 +164,5 @@ class ProfessorEmploymentValidationSpec extends Specification {
 
         expect:
             RULES.examine(context).isSuccess()
-    }
-
-    def "should return reason containing professor name and faculty name"() {
-        given:
-            def context = contextWith {
-                application(applicationWith {
-                    yearsOfExperience(0)
-                    noFields()
-                })
-                faculty(facultyWith {
-                    fieldsOfStudies("math", "cs")
-                })
-            }
-
-        expect:
-            with(RULES.examine(context)) {
-                isFailure()
-                message().contains(ZUCK)
-                message().contains(IT_FACULTY_NAME)
-            }
     }
 }
