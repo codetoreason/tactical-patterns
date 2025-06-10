@@ -4,6 +4,7 @@ package dev.codetoreason.patterns.tactical.rule.example.university.professor.emp
 import spock.lang.Specification
 import spock.lang.Subject
 
+import static dev.codetoreason.patterns.tactical.rule.example.university.professor.employment.ProfessorEmploymentFixture.DEFAULT_CONFIG
 import static dev.codetoreason.patterns.tactical.rule.example.university.professor.employment.ProfessorEmploymentFixture.IT_FACULTY_NAME
 import static dev.codetoreason.patterns.tactical.rule.example.university.professor.employment.ProfessorEmploymentFixture.ZUCK
 import static dev.codetoreason.patterns.tactical.rule.example.university.professor.employment.ProfessorEmploymentFixture.applicationWith
@@ -12,14 +13,8 @@ import static dev.codetoreason.patterns.tactical.rule.example.university.profess
 
 class ProfessorEmploymentValidationSpec extends Specification {
 
-    static final def CONFIG = ProfessorEmploymentConfig.builder()
-                                                       .minYearsOfExperience(5)
-                                                       .minMatchedFieldsOfStudy(3)
-                                                       .maxCourseLeaderships(4)
-                                                       .build()
-
     @Subject
-    static final def RULES = ProfessorEmploymentRulesFactory.from(CONFIG)
+    static final def RULES = ProfessorEmploymentRulesFactory.from(DEFAULT_CONFIG)
                                                             .createRules()
 
     def "should fail when years of experience are below threshold"() {
