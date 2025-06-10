@@ -36,7 +36,7 @@ public abstract class InMemoryEntityRepository<E extends Entity<ID>, ID> impleme
      * Attempts to find an entity by its identifier.
      *
      * @param id the identifier of the entity
-     * @return an {@link Optional} containing the entity if found, or empty if not
+     * @return an {@link Optional} containing the entity if found, or empty if not found.
      */
     @Override
     public Optional<E> findById(ID id) {
