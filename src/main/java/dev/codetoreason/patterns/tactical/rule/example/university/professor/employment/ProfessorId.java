@@ -5,4 +5,8 @@ import java.util.UUID;
 public record ProfessorId(
         UUID value
 ) {
+
+    public static ProfessorId newOne() {
+        return new ProfessorId(UUID.randomUUID());
+    }
 }
