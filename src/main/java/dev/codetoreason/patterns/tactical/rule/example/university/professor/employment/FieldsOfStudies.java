@@ -18,6 +18,12 @@ public record FieldsOfStudies(
         return EMPTY;
     }
 
+    public static FieldsOfStudies of(String... names) {
+        return new FieldsOfStudies(Stream.of(names)
+                                         .map(FieldOfStudy::of)
+                                         .collect(toSet()));
+    }
+
     public static Collector<FieldOfStudy, Object, FieldsOfStudies> toFieldsOfStudies() {
         return collectingAndThen(
                 toSet(),
