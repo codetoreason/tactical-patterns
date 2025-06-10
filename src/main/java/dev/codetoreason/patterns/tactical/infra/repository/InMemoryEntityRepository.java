@@ -44,6 +44,19 @@ public abstract class InMemoryEntityRepository<E extends Entity<ID>, ID> impleme
     }
 
     /**
+     * Returns all entities currently stored in memory.
+     * <p>
+     * Useful for bulk inspection or assertions in test scenarios.
+     *
+     * @return a list of all stored entities
+     */
+    public List<E> findAll() {
+        return repo.values()
+                   .stream()
+                   .toList();
+    }
+
+    /**
      * Returns all entities that match the given predicate.
      *
      * @param predicate the filtering predicate
