@@ -94,7 +94,7 @@ class ProfessorEmploymentFixture {
                 FacultyCatalogEntry.builder()
                                    .id(IT_FACULTY_ID)
                                    .name(IT_FACULTY_NAME)
-                                   .fieldsOfStudies(fields(names))
+                                   .fieldsOfStudies(FieldsOfStudies.of(names))
                                    .build()
         )
         this
@@ -131,13 +131,6 @@ class ProfessorEmploymentFixture {
                            .name(IT_FACULTY_NAME)
     }
 
-
-    private static FieldsOfStudies fields(String... names) {
-        new FieldsOfStudies(names.collect {
-            new FieldOfStudy(it)
-        })
-    }
-
     private static class ProfessorApplicationDsl {
 
         private final ProfessorEmploymentApplicationBuilder delegate
@@ -151,7 +144,7 @@ class ProfessorEmploymentFixture {
         }
 
         void fieldsOfStudies(String... names) {
-            delegate.fieldsOfStudies(fields(names))
+            delegate.fieldsOfStudies(FieldsOfStudies.of(names))
         }
 
         ProfessorEmploymentApplicationBuilder unwrap() {
@@ -168,7 +161,7 @@ class ProfessorEmploymentFixture {
         }
 
         void fieldsOfStudies(String... names) {
-            delegate.fieldsOfStudies(fields(names))
+            delegate.fieldsOfStudies(FieldsOfStudies.of(names))
         }
 
         FacultyCatalogEntryBuilder unwrap() {
