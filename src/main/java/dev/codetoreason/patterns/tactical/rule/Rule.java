@@ -90,7 +90,7 @@ public class Rule<T> {
          */
         public Rule<T> orElse(String failureReason) {
             if (failureReason == null || failureReason.isBlank()) {
-                throw new IllegalArgumentException("FailureReason function must be non-null and non-blank");
+                throw new IllegalArgumentException("Failure reason must be non-null and non-blank");
             }
             return orElse(_ -> failureReason);
         }
